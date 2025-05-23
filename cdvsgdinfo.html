@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: CrazyDomains vs. GoDaddy - Australian Web Builder Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light Gray */
+            color: #343a40; /* Dark Gray */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+                max-height: 400px;
+            }
+        }
+        .material-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        /* New deeper blue palette */
+        .primary-dark-bg { background-color: #0A1931; } /* Very dark blue, almost black */
+        .primary-accent-blue-bg { background-color: #1F456E; } /* Deep rich blue */
+        .primary-text { color: #0A1931; } /* Very dark blue for main text */
+        .primary-accent-blue-text { color: #1F456E; } /* Deep rich blue for accents */
+
+        .accent-orange-bg { background-color: #fd7e14; }
+        .accent-orange-text { color: #fd7e14; }
+        .accent-yellow-bg { background-color: #ffc107; }
+        .accent-yellow-text { color: #ffc107; }
+
+        /* Adjusted for new blue palette */
+        .tab-active { border-bottom-color: #1F456E; color: #1F456E; }
+        .nav-link-active { color: #1F456E; font-weight: 600; }
+
+        .flowchart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        .flowchart-step {
+            background-color: #e0e8f0; /* Very light blue-gray */
+            border: 1px solid #dbe3eb;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            margin-bottom: 2.5rem;
+            width: 80%;
+            max-width: 300px;
+        }
+        .flowchart-step:last-child {
+            margin-bottom: 0;
+        }
+        .flowchart-step h4 {
+            font-weight: 600;
+            color: #0A1931; /* Very dark blue */
+            margin-bottom: 0.25rem;
+        }
+        .flowchart-step p {
+            font-size: 0.875rem;
+            color: #334155;
+        }
+        .flowchart-connector {
+            position: absolute;
+            bottom: -2.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 2.25rem;
+            background-color: #1F456E; /* Deep rich blue */
+            z-index: 5;
+        }
+        .flowchart-connector::after {
+            content: '';
+            position: absolute;
+            bottom: -0.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 15px solid #1F456E; /* Deep rich blue */
+            z-index: 10;
+        }
+        .stat-big {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .icon-placeholder {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center py-8 mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold primary-text mb-4">The Aussie Web Builder Battle</h1>
+            <p class="text-xl md:text-2xl text-gray-700">CrazyDomains vs. GoDaddy: Who's Winning the Race for Australian SMBs?</p>
+        </header>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">The Aussie Digital Landscape <span class="accent-orange-text">🇦🇺</span></h2>
+            <p class="section-subtitle">Understanding local preferences is key to unlocking the Australian market.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="material-card text-center">
+                    <p class="stat-big primary-text">74%</p>
+                    <p class="text-lg text-gray-700 mt-2">of all registered domains in Australia are <strong class="primary-text">.com.au</strong>.</p>
+                    <p class="text-sm text-gray-500 mt-1">(Source: Report Section 1)</p>
+                </div>
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 text-center primary-text">Aussies Trust Local</h3>
+                    <div class="chart-container mx-auto">
+                        <canvas id="auPreferenceChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-3">(Source: Report Section 1, [1,2])</p>
+                </div>
+            </div>
+            <p class="text-center mt-6 text-gray-600">This strong preference for local domains highlights a significant opportunity for Australian-grown companies like CrazyDomains.</p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">Meet the Contenders <span class="accent-orange-text">🥊</span></h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="material-card">
+                    <h3 class="text-2xl font-bold mb-4 text-center primary-text">CrazyDomains</h3>
+                    <div class="text-center icon-placeholder primary-text">🏢</div>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li>Founded in Perth, Australia (2000).</li>
+                        <li>Largest AU domain registrar & web host.</li>
+                        <li>Serves 600,000+ SMBs worldwide.</li>
+                        <li>Mission: Simplify online success for "Aussie businesses".</li>
+                        <li>Offers AI-powered Website Builder.</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2 text-center">(Source: Report Section 2.1)</p>
+                </div>
+                <div class="material-card">
+                    <h3 class="text-2xl font-bold mb-4 text-center primary-text">GoDaddy</h3>
+                     <div class="text-center icon-placeholder primary-text">🌍</div>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li>World's leading domain registrar (82M+ domains).</li>
+                        <li>Global infrastructure (US, Europe, Asia).</li>
+                        <li>Focus on SMB tools: builder, marketing, e-commerce.</li>
+                        <li>Offers AI-powered Website Builder (Airo®).</li>
+                    </ul>
+                     <p class="text-xs text-gray-500 mt-2 text-center">(Source: Report Section 2.2)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">Web Builder Head-to-Head <span class="accent-orange-text">🛠️</span></h2>
+            <p class="section-subtitle">Comparing key features of their website builder offerings.</p>
+            <div class="material-card">
+                <div class="chart-container mx-auto" style="height: 350px; max-height: 450px;">
+                    <canvas id="featureComparisonChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-3">(Conceptual ratings based on report analysis, Section 3.2)</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">Core Services Comparison <span class="accent-orange-text">🌐</span></h2>
+            <p class="section-subtitle">A closer look at domain, hosting, and pricing structures.</p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 text-center primary-text">Domain Pricing (1st Year & Renewal)</h3>
+                    <div class="chart-container mx-auto" style="height: 280px; max-height: 350px;">
+                        <canvas id="domainPricingChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-3">(Source: Report Section 3.1, [17,18])</p>
+                </div>
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 text-center primary-text">Entry-Level Hosting Storage</h3>
+                    <div class="chart-container mx-auto" style="height: 280px; max-height: 350px;">
+                        <canvas id="hostingStorageChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-3">(Source: Report Section 3.1, [9,25])</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 text-center primary-text">Money-Back Guarantee Period</h3>
+                    <div class="chart-container mx-auto" style="height: 280px; max-height: 350px;">
+                        <canvas id="moneyBackChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-3">(Source: Report Section 3.1, [6,9,16,20,26,28])</p>
+                </div>
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 text-center primary-text">Customer Support Channels Offered</h3>
+                    <div class="chart-container mx-auto" style="height: 280px; max-height: 350px;">
+                        <canvas id="supportChannelsChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-3">(Source: Report Section 3.1, [9,10,15,16,17,20,22,23,24,29,31,36,37,38])</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">E-commerce Checkout: The Trust Factor <span class="accent-orange-text">💳</span></h2>
+            <p class="section-subtitle">A seamless checkout builds customer confidence. Here's how they compare.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="material-card text-center border-4 border-green-400">
+                    <h3 class="text-xl font-semibold mb-3 text-green-600">CrazyDomains: On-Domain Confidence</h3>
+                    <div class="icon-placeholder text-green-500">✅</div>
+                    <p class="text-gray-700 mb-2">Checkout process (implied) remains on <strong class="text-green-600">YourWebsite.com.au</strong></p>
+                    <div class="p-2 bg-green-100 rounded text-green-700 font-mono text-sm">yourwebsite.com.au/checkout</div>
+                    <p class="mt-3 text-sm text-green-700 font-semibold">Builds Trust & Professionalism</p>
+                    <p class="text-xs text-gray-500 mt-1">(Source: Report Section 3.2.3)</p>
+                </div>
+                <div class="material-card text-center border-4 border-red-400">
+                    <h3 class="text-xl font-semibold mb-3 text-red-600">GoDaddy: Off-Domain Redirect</h3>
+                     <div class="icon-placeholder text-red-500">⚠️</div>
+                    <p class="text-gray-700 mb-2">Customers redirected to <strong class="text-red-600">mysimplestore.com</strong> for payment.</p>
+                    <div class="p-2 bg-red-100 rounded text-red-700 font-mono text-sm">mysimplestore.com/checkout</div>
+                    <p class="mt-3 text-sm text-red-700 font-semibold">Potential Trust Issue & Brand Dilution</p>
+                    <p class="text-xs text-gray-500 mt-1">(Source: Report Section 3.2.3, [53])</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">Performance Snapshot (AU Focus) <span class="accent-orange-text">⚡</span></h2>
+            <p class="section-subtitle">How do they stack up in real-world Australian performance?</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 primary-text">CrazyDomains</h3>
+                    <ul class="list-none space-y-2 text-gray-700">
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 primary-text">📍</span> Local Australian Servers</li>
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 primary-text">⏱️</span> Emphasizes "GREAT" server response times</li>
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 primary-text">📈</span> Focus on faster performance for AU sites</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2">(Source: Report Section 3.2.5)</p>
+                </div>
+                <div class="material-card">
+                    <h3 class="text-xl font-semibold mb-3 primary-text">GoDaddy</h3>
+                     <ul class="list-none space-y-2 text-gray-700">
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 accent-orange-text">🌍</span> Global Servers (US, Europe, Asia)</li>
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 accent-orange-text">🐌</span> Independent tests show "disappointing performance" in AU</li>
+                        <li class="flex items-center"><span class="icon-placeholder mr-2 accent-orange-text">📉</span> Lags competitors in Sydney speed tests (LCP 1.7s)</li>
+                    </ul>
+                     <p class="text-xs text-gray-500 mt-2">(Source: Report Section 3.2.5, [30])</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">CrazyDomains' Path to Domination <span class="accent-orange-text">🚀</span></h2>
+            <p class="section-subtitle">Leveraging strengths and addressing weaknesses is key.</p>
+            
+            <div class="material-card mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-center primary-text">Key Strengths to Amplify (Web Builder)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
+                    <div class="p-3 bg-blue-100 rounded">🇦🇺 Strong Aussie Brand</div>
+                    <div class="p-3 bg-blue-100 rounded">💡 AI Ease of Use</div>
+                    <div class="p-3 bg-blue-100 rounded">🛒 On-Domain E-commerce</div>
+                    <div class="p-3 bg-blue-100 rounded">📈 Robust SEO Tools</div>
+                </div>
+                 <p class="text-xs text-gray-500 mt-2 text-center">(Source: Report Section 4, Table 4)</p>
+            </div>
+
+            <div class="material-card">
+                <h3 class="text-xl font-semibold mb-4 text-center primary-text">Strategic Implementation: Detailed Flow</h3>
+                <p class="text-center text-gray-600 mb-6">Click each strategy to see its detailed implementation flowchart.</p>
+
+                <div id="strategic-recommendations-flowcharts" class="space-y-4">
+                    <div class="recommendation-accordion-item border border-gray-200 rounded-lg">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium text-gray-800 rounded-lg">
+                            1. Leverage Australian Identity & Local Preference 🇦🇺
+                            <span class="arrow transform transition-transform duration-200 ease-in-out text-gray-600">&#9662;</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 text-sm bg-white border-t border-gray-200 rounded-b-lg">
+                            <p class="mb-4"><strong>Action:</strong> Launch "True Blue Aussie Choice" campaigns. Emphasize Perth origins, local data centers, understanding of Aussie businesses.</p>
+                            <p class="mb-4"><strong>Rationale:</strong> Capitalize on strong local trust in `.au` and Australian businesses, differentiating from GoDaddy's global approach.</p>
+                            <h4 class="text-base font-semibold primary-text mt-6 mb-4 text-center">Implementation Flow: Australian Identity</h4>
+                            <div class="flowchart-container">
+                                <div class="flowchart-step">
+                                    <h4>START: Global vs. Local Perception</h4>
+                                    <p>GoDaddy's global scale, CD's local roots.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 1: Market Research & Messaging</h4>
+                                    <p>Identify key local values; craft "True Blue Aussie Choice" narrative.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 2: Campaign Development</h4>
+                                    <p>Create marketing assets (ads, social, website content) highlighting local benefits.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 3: Emphasize Local Proof Points</h4>
+                                    <p>Promote Perth origins, AU data centers, local support teams.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step primary-dark-bg text-white">
+                                    <h4 class="font-semibold text-white">END: Increased Local Trust & Market Share</h4>
+                                    <p>CD positioned as the authentic Australian choice.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-accordion-item border border-gray-200 rounded-lg">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium text-gray-800 rounded-lg">
+                            2. Transform Customer Support (CRITICAL) 📞
+                            <span class="arrow transform transition-transform duration-200 ease-in-out text-gray-600">&#9662;</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 text-sm bg-white border-t border-gray-200 rounded-b-lg">
+                            <p class="mb-4"><strong>Action:</strong> Overhaul support quality via training. Eliminate $99/hr "Advanced Support" charge; integrate into plans. Implement clear escalation & proactive communication.</p>
+                            <p class="mb-4"><strong>Rationale:</strong> Address the biggest current weakness. Excellent support can be a powerful differentiator and rebuild trust, directly impacting retention and referrals.</p>
+                            <h4 class="text-base font-semibold primary-text mt-6 mb-4 text-center">Implementation Flow: Customer Support Transformation</h4>
+                            <div class="flowchart-container">
+                                <div class="flowchart-step">
+                                    <h4>START: Current State</h4>
+                                    <p>Poor support reputation, high "Advanced Support" charges.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 1: Comprehensive Staff Training</h4>
+                                    <p>Focus on technical competence, problem-solving, empathy, and communication.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 2: Revise Pricing Model</h4>
+                                    <p>Eliminate $99/hr "Advanced Support"; integrate into plans or offer fixed-cost premium add-on.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 3: Implement Escalation & Communication</h4>
+                                    <p>Establish clear escalation paths and proactive communication protocols for issues.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 4: Public Commitment & Monitoring</h4>
+                                    <p>Publicly commit to improvement; regularly share customer satisfaction metrics.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step primary-dark-bg text-white">
+                                    <h4 class="font-semibold text-white">END: Improved Reputation & Retention</h4>
+                                    <p>Enhanced customer trust, higher retention, positive word-of-mouth.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-accordion-item border border-gray-200 rounded-lg">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium text-gray-800 rounded-lg">
+                            3. Highlight E-commerce Trust & Seamlessness 🔒
+                            <span class="arrow transform transition-transform duration-200 ease-in-out text-gray-600">&#9662;</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 text-sm bg-white border-t border-gray-200 rounded-b-lg">
+                            <p class="mb-4"><strong>Action:</strong> Aggressively market the on-domain checkout. Create comparative content highlighting this advantage over GoDaddy's off-domain redirect.</p>
+                            <p class="mb-4"><strong>Rationale:</strong> Address a critical GoDaddy flaw. On-domain checkout is vital for e-commerce trust and conversion.</p>
+                            <h4 class="text-base font-semibold primary-text mt-6 mb-4 text-center">Implementation Flow: E-commerce Trust</h4>
+                            <div class="flowchart-container">
+                                <div class="flowchart-step">
+                                    <h4>START: GoDaddy's Trust Issue</h4>
+                                    <p>Off-domain checkout creates poor trust signals for users.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 1: Verify On-Domain Checkout</h4>
+                                    <p>Ensure CD's e-commerce truly keeps users on the domain throughout checkout.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 2: Develop Trust-Focused Messaging</h4>
+                                    <p>Craft clear, concise messages emphasizing seamless, secure, on-domain experience.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 3: Create Comparative Content</h4>
+                                    <p>Produce articles, videos, and infographics contrasting CD's checkout with GD's redirect.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step primary-dark-bg text-white">
+                                    <h4 class="font-semibold text-white">END: Increased E-commerce Conversions</h4>
+                                    <p>Users trust CD's platform more, leading to higher sales for businesses.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-accordion-item border border-gray-200 rounded-lg">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium text-gray-800 rounded-lg">
+                            4. Enhance Web Builder Design Flexibility ✨
+                            <span class="arrow transform transition-transform duration-200 ease-in-out text-gray-600">&#9662;</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 text-sm bg-white border-t border-gray-200 rounded-b-lg">
+                            <p class="mb-4"><strong>Action:</strong> Introduce more granular design controls (positioning, fonts, colors) without coding, while maintaining ease of use.</p>
+                            <p class="mb-4"><strong>Rationale:</strong> Directly counter GoDaddy's major limitation and empower users to create unique, professional sites.</p>
+                            <h4 class="text-base font-semibold primary-text mt-6 mb-4 text-center">Implementation Flow: Design Flexibility</h4>
+                            <div class="flowchart-container">
+                                <div class="flowchart-step">
+                                    <h4>START: Current Design Limitations</h4>
+                                    <p>CD's builder has some design restrictions; GD is highly restrictive.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 1: User Research & Feature Prioritization</h4>
+                                    <p>Identify most desired granular controls (e.g., precise positioning, custom fonts).</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 2: UI/UX Design & Development</h4>
+                                    <p>Integrate new controls intuitively into the drag-and-drop interface.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 3: Beta Testing & Iteration</h4>
+                                    <p>Gather user feedback to refine new design tools and ensure ease of use.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 4: Marketing Unique Design Capabilities</h4>
+                                    <p>Promote the ability to create truly unique, professional sites with CD.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step primary-dark-bg text-white">
+                                    <h4 class="font-semibold text-white">END: Empowered Users & Differentiated Product</h4>
+                                    <p>Users create distinct sites, CD stands out from generic builders.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-accordion-item border border-gray-200 rounded-lg">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium text-gray-800 rounded-lg">
+                            5. Transparent Pricing & Proactive Performance Marketing 💰⚡
+                            <span class="arrow transform transition-transform duration-200 ease-in-out text-gray-600">&#9662;</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 text-sm bg-white border-t border-gray-200 rounded-b-lg">
+                            <p class="mb-4"><strong>Action:</strong> Clearly display renewal rates. Publish independent Australian performance benchmarks showcasing speed advantages.</p>
+                            <p class="mb-4"><strong>Rationale:</strong> Build trust through transparency. Data-backed performance claims can attract savvy businesses.</p>
+                            <h4 class="text-base font-semibold primary-text mt-6 mb-4 text-center">Implementation Flow: Pricing & Performance</h4>
+                            <div class="flowchart-container">
+                                <div class="flowchart-step">
+                                    <h4>START: Pricing & Performance Perception</h4>
+                                    <p>Users wary of hidden costs; GD's performance inconsistent.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 1: Pricing Model Review & Transparency</h4>
+                                    <p>Simplify plans; clearly display all initial and renewal rates upfront.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 2: Commission Independent Benchmarks</h4>
+                                    <p>Engage third-party for Australian-specific performance tests (speed, uptime).</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 3: Publish & Promote Data</h4>
+                                    <p>Feature performance results prominently on website, marketing materials.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step">
+                                    <h4>STEP 4: Value-Driven Messaging</h4>
+                                    <p>Emphasize long-term value, reliability, and local speed advantages.</p>
+                                    <div class="flowchart-connector"></div>
+                                </div>
+                                <div class="flowchart-step primary-dark-bg text-white">
+                                    <h4 class="font-semibold text-white">END: Enhanced Trust & Customer Acquisition</h4>
+                                    <p>Attract performance- and value-conscious Australian businesses.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title primary-text">Why Choose CrazyDomains Website Builder? <span class="accent-orange-text">🌟</span></h2>
+            <p class="section-subtitle">Discover the compelling advantages that make CrazyDomains the preferred choice for building your online presence in Australia.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">🇦🇺</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Local Trust & Identity</h3>
+                    <p class="text-gray-700 text-sm">Deeply rooted in Australia, CrazyDomains aligns with consumer preference for .au domains, building inherent trust and relevance.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">🛒</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Seamless E-commerce</h3>
+                    <p class="text-gray-700 text-sm">Enjoy an integrated, on-domain checkout experience, fostering customer trust and professional branding, unlike competitors.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">📈</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Advanced SEO Guidance</h3>
+                    <p class="text-gray-700 text-sm">Benefit from structured SEO tools, health checks, and competitor analysis to boost your site's visibility and ranking.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">⚡</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Optimized Local Performance</h3>
+                    <p class="text-gray-700 text-sm">Leverage local Australian servers for faster loading times and reduced latency, ensuring a better experience for your audience.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">💡</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Intuitive AI Builder</h3>
+                    <p class="text-gray-700 text-sm">Quickly create professional websites with AI-powered tools and an easy-to-use drag-and-drop interface, no coding required.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <span class="text-5xl mb-4 primary-accent-blue-text">🛡️</span>
+                    <h3 class="font-bold text-xl text-gray-900 mb-2">Generous Trial & Guarantee</h3>
+                    <p class="text-gray-700 text-sm">Experience the builder with a 90-day free trial on .au domains and a 60-day money-back guarantee for peace of mind.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="text-center py-8">
+            <h2 class="section-title primary-text">The Verdict <span class="accent-orange-text">🏆</span></h2>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-6">
+                The Australian web builder market is <strong class="primary-text">contestable</strong>. GoDaddy's global scale is offset by product flaws. CrazyDomains, with its local appeal and better e-commerce, has a <strong class="accent-orange-text">massive opportunity</strong>.
+            </p>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+                By transforming customer support and strategically marketing its unique strengths, CrazyDomains can <strong class="primary-text">dominate</strong> this segment.
+            </p>
+            <p class="text-xs text-gray-500 mt-2">(Source: Report Section 5 & Conclusions)</p>
+        </section>
+
+        <section id="hero" class="relative bg-gradient-to-r from-[#0A1931] to-[#1F456E] text-white py-24 px-6 sm:px-10 lg:px-16 rounded-xl shadow-xl text-center mt-12">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+                Ready to Dominate the .au Digital Frontier?
+            </h1>
+            <p class="text-lg sm:text-xl lg:text-2xl font-light opacity-90 mb-8">
+                Learn more about CrazyDomains' strategic advantages and how to build your online presence.
+            </p>
+            <a href="https://indiegod.github.io/cd-gd-analysis/" target="_blank" rel="noopener noreferrer" class="inline-block bg-white text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 hover:text-gray-800 transition duration-300 transform hover:scale-105">
+                Explore the Report
+            </a>
+        </section>
+
+    </div>
+
+    <script>
+        function formatLabel(str, maxwidth) {
+            if (typeof str !== 'string') return [String(str)];
+            let sections = [];
+            let words = str.split(" ");
+            let temp = "";
+            words.forEach((item, index) => {
+                if (temp.length > 0) {
+                    temp = temp + " " + item;
+                } else {
+                    temp = item;
+                }
+                if (temp.length > maxwidth) {
+                    sections.push(temp);
+                    temp = "";
+                }
+                if (index === words.length - 1 && temp.length > 0) {
+                    sections.push(temp);
+                }
+            });
+            return sections.length > 0 ? sections : [str];
+        }
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: { size: 10 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const auPreferenceCtx = document.getElementById('auPreferenceChart').getContext('2d');
+        new Chart(auPreferenceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Shop on .au Sites (50%)', 'Shop on Other Sites (50%)'],
+                datasets: [{
+                    data: [50, 50],
+                    backgroundColor: ['#1F456E', '#fd7e14'], /* Deep rich blue, Accent Orange */
+                    borderColor: ['#ffffff', '#ffffff'],
+                    borderWidth: 2
+                }]
+            },
+            options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Aussie Online Shopping Habits' } } }
+        });
+
+        const featureComparisonCtx = document.getElementById('featureComparisonChart').getContext('2d');
+        new Chart(featureComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    formatLabel('Ease of Use (AI)', 16), 
+                    formatLabel('E-commerce (On-Domain)', 16), 
+                    formatLabel('Design Flexibility', 16), 
+                    formatLabel('SEO Tools', 16)
+                ],
+                datasets: [
+                    {
+                        label: 'CrazyDomains',
+                        data: [4.5, 4, 3.5, 4],
+                        backgroundColor: '#1F456E', /* Deep rich blue */
+                        borderColor: '#1A3350', /* Darker Deep rich blue */
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'GoDaddy',
+                        data: [4, 2.5, 2, 3],
+                        backgroundColor: '#fd7e14', /* Accent Orange */
+                        borderColor: '#c6650f', /* Darker Accent Orange */
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } },
+                    y: { ticks: { font: { size: 10 } } }
+                },
+                plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Web Builder Feature Strength (Conceptual)' } }
+            }
+        });
+
+        const domainPricingCtx = document.getElementById('domainPricingChart').getContext('2d');
+        new Chart(domainPricingCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    formatLabel('.com.au (1st Yr)', 16), 
+                    formatLabel('.com.au (Renewal)', 16), 
+                    formatLabel('.com (1st Yr)', 16), 
+                    formatLabel('.com (Renewal)', 16)
+                ],
+                datasets: [
+                    {
+                        label: 'CrazyDomains ($AUD)',
+                        data: [9.55, 20.99, 19.99, 25.99],
+                        backgroundColor: '#1F456E',
+                        borderColor: '#1A3350',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'GoDaddy',
+                        data: [0.01, 23.95, 0.05, 39.98],
+                        backgroundColor: '#fd7e14',
+                        borderColor: '#c6650f',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: function(value) { return '$' + value; } } },
+                    x: { ticks: { font: { size: 10 } } }
+                },
+                plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Domain Pricing Comparison (AUD)' } }
+            }
+        });
+
+        const hostingStorageCtx = document.getElementById('hostingStorageChart').getContext('2d');
+        new Chart(hostingStorageCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    formatLabel('CrazyDomains (Economy Linux)', 16), 
+                    formatLabel('GoDaddy (Economy Shared)', 16)
+                ],
+                datasets: [{
+                    label: 'Entry-Level SSD Storage (GB)',
+                    data: [10, 25],
+                    backgroundColor: ['#1F456E', '#fd7e14'],
+                    borderColor: ['#1A3350', '#c6650f'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, ticks: { callback: function(value) { return value + 'GB'; } } },
+                    y: { ticks: { font: { size: 10 } } }
+                },
+                plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Entry-Level Hosting Storage (GB)' } }
+            }
+        });
+
+        const moneyBackCtx = document.getElementById('moneyBackChart').getContext('2d');
+        new Chart(moneyBackCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    formatLabel('CrazyDomains', 16), 
+                    formatLabel('GoDaddy', 16)
+                ],
+                datasets: [{
+                    label: 'Money-Back Guarantee (Days)',
+                    data: [60, 30],
+                    backgroundColor: ['#1F456E', '#fd7e14'],
+                    borderColor: ['#1A3350', '#c6650f'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: function(value) { return value + ' Days'; } } },
+                    x: { ticks: { font: { size: 10 } } }
+                },
+                plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Money-Back Guarantee Period' } }
+            }
+        });
+
+        const supportChannelsCtx = document.getElementById('supportChannelsChart').getContext('2d');
+        new Chart(supportChannelsCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    formatLabel('Live Chat', 16), 
+                    formatLabel('Phone Support', 16), 
+                    formatLabel('Email Support', 16), 
+                    formatLabel('SMS Support', 16)
+                ],
+                datasets: [
+                    {
+                        label: 'CrazyDomains',
+                        data: [1, 1, 1, 0],
+                        backgroundColor: '#1F456E',
+                        borderColor: '#1A3350',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'GoDaddy',
+                        data: [1, 1, 0, 1],
+                        backgroundColor: '#fd7e14',
+                        borderColor: '#c6650f',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 1.2, ticks: { stepSize: 1, callback: function(value) { return value === 1 ? 'Offered' : ''; } } },
+                    y: { ticks: { font: { size: 10 } } }
+                },
+                plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Customer Support Channels Offered' } }
+            }
+        });
+
+
+        const accordionToggles = document.querySelectorAll('.accordion-toggle');
+        accordionToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const arrow = toggle.querySelector('.arrow');
+                content.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-180');
+
+                document.querySelectorAll('.accordion-content').forEach(otherContent => {
+                    if (otherContent !== content && !otherContent.classList.contains('hidden')) {
+                        otherContent.classList.add('hidden');
+                        otherContent.previousElementSibling.querySelector('.arrow').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
